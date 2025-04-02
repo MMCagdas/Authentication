@@ -49,8 +49,8 @@ fs.writeFileSync(swaggerPath, JSON.stringify(swaggerDocs, null, 2));
 
 // CORS ayarları
 app.use(cors({
-    origin: "*", 
-    credentials: true,
+    origin: 'https://todo-b4cad.web.app', // Doğru domaini yaz
+    credentials: true, // Credential desteği için
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
