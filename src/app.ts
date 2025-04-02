@@ -55,6 +55,15 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Tüm yanıtlara CORS başlıklarını ekleyen middleware
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "https://todo-b4cad.web.app");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+});
+
 app.use(express.json());
 
 // Test endpoint'i
