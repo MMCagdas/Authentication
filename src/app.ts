@@ -49,7 +49,7 @@ fs.writeFileSync(swaggerPath, JSON.stringify(swaggerDocs, null, 2));
 
 // CORS ayarları
 app.use(cors({
-    origin: "*", // Firebase Auth Domain'i kullanıyoruz
+    origin: "*", 
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
