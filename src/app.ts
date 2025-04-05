@@ -7,6 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
+import todoRoutes from './routes/todoRoutes';
 
 dotenv.config();
 
@@ -49,15 +50,21 @@ fs.writeFileSync(swaggerPath, JSON.stringify(swaggerDocs, null, 2));
 
 // CORS ayarları
 app.use(cors({
-    origin: 'https://todo-b4cad.web.app', // Doğru domaini yaz
-    credentials: true, // Credential desteği için
+    origin: ['https://todo-b4cad.web.app', 'http://todo-b4cad.firebaseapp.com'], // İki domain için izin
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Tüm yanıtlara CORS başlıklarını ekleyen middleware
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://todo-b4cad.web.app");
+    const allowedOrigins = ['https://todo-b4cad.web.app', 'http://todo-b4cad.firebaseapp.com'];
+    const origin = req.headers.origin;
+    
+    if (origin && allowedOrigins.includes(origin)) {
+        res.header("Access-Control-Allow-Origin", origin);
+    }
+    
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -74,6 +81,7 @@ app.get('/', (req, res) => {
 // Rotalar
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/todos', todoRoutes);
 
 const port = process.env.PORT || 3000;
 
