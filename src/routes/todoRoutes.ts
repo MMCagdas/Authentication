@@ -100,6 +100,18 @@ router.post('/', authenticateToken, async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Title is required' });
         }
 
+        if (title.length < 3) {
+            return res.status(400).json({ message: 'Title must be at least 3 characters long' });
+        }
+
+        if (title.length > 100) {
+            return res.status(400).json({ message: 'Title must not exceed 100 characters' });
+        }
+
+        if (description && description.length > 500) {
+            return res.status(400).json({ message: 'Description must not exceed 500 characters' });
+        }
+
         const todo = await prisma.todo.create({
             data: {
                 title,

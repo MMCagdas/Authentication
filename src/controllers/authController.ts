@@ -3,6 +3,10 @@ import bcrypt from 'bcrypt';
 import prisma from '../lib/prisma';
 import jwt from 'jsonwebtoken';
 
+if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined in environment variables');
+}
+
 export const register = async (req: Request, res: Response) => {
     try {
         const { email, password , name} = req.body;
@@ -58,12 +62,15 @@ export const login = async (req: Request, res: Response) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
-        //Refresh token arastır
-        const token = jwt.sign (
+        if (!process.env.JWT_SECRET) {
+            return res.status(500).json({ message: 'Server configuration error' });
+        }
+
+        const token = jwt.sign(
             {id: user.id, email: user.email},
-            process.env.JWT_SECRET as string,
+            process.env.JWT_SECRET,
             { expiresIn: '1d' }
-        )
+        );
 
         const { password: _, ...userWithoutPassword } = user;
         return res.status(200).json({
