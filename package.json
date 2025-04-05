@@ -5,7 +5,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "start": "ts-node-dev src/app.ts"
+    "start": "node dist/app.js",
+    "postinstall": "prisma generate",
+    "migrate:deploy": "prisma migrate deploy",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
